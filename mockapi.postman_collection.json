@@ -1,0 +1,330 @@
+{
+	"info": {
+		"_postman_id": "9601e855-aca5-48d5-b73f-f14aa40d1a61",
+		"name": "mockapi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43753134"
+	},
+	"item": [
+		{
+			"name": "add user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Check status code 201\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"// Check if name is correct\r",
+							"pm.test(\"Name is correct\", function () {\r",
+							"    let res = pm.response.json();\r",
+							"    pm.expect(res.name).to.eql(\"Ahmad Malkawi\");\r",
+							"});\r",
+							"\r",
+							"// Save ID to environment variable\r",
+							"let res = pm.response.json();\r",
+							"pm.environment.set(\"userId\", res.id);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Ahmad Malkawi\",\r\n  \"email\": \"ahmad@test.com\",\r\n  \"age\": 30\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{mockBurl}}res1",
+					"host": [
+						"{{mockBurl}}res1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "thow methods that allows",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Check if status code is 204\r",
+							"pm.test(\"Status code is 204\", function () {\r",
+							"    pm.expect(pm.response.code).to.eql(204);\r",
+							"});\r",
+							"\r",
+							"// Get allowed methods header\r",
+							"let allowHeader = pm.response.headers.get(\"Access-Control-Allow-Methods\");\r",
+							"\r",
+							"// Log header value\r",
+							"console.log(\"Access-Control-Allow-Methods:\", allowHeader);\r",
+							"\r",
+							"// Check if header exists\r",
+							"pm.test(\"Access-Control-Allow-Methods header is present\", function () {\r",
+							"    pm.expect(allowHeader).to.not.be.null;\r",
+							"});\r",
+							"\r",
+							"// Check if expected methods are included\r",
+							"pm.test(\"Contains expected methods\", function () {\r",
+							"    pm.expect(allowHeader).to.include(\"GET\");\r",
+							"    pm.expect(allowHeader).to.include(\"POST\");\r",
+							"    pm.expect(allowHeader).to.include(\"PUT\");\r",
+							"    pm.expect(allowHeader).to.include(\"DELETE\");\r",
+							"    pm.expect(allowHeader).to.include(\"OPTIONS\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "OPTIONS",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{mockBurl}}res1/{{userId}}",
+					"host": [
+						"{{mockBurl}}res1"
+					],
+					"path": [
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "show user1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// ✅ تأكد إن العملية نجحت برمز الحالة 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// ✅ تأكد إن الـ name موجود فعليًا\r",
+							"let res = pm.response.json();\r",
+							"\r",
+							"pm.test(\"User name is Ahmad Malkawi\", function () {\r",
+							"    pm.expect(res.name).to.eql(\"Ahmad Malkawi\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{mockBurl}}res1/{{userId}}",
+					"host": [
+						"{{mockBurl}}res1"
+					],
+					"path": [
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"age is updated\", function () {\r",
+							"    let res = pm.response.json();\r",
+							"    pm.expect(res.age).to.eql(31);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Ahmad Malkawi\",\r\n  \"age\": 31,\r\n  \"email\": \"ahmad@test.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{mockBurl}}res1/{{userId}}",
+					"host": [
+						"{{mockBurl}}res1"
+					],
+					"path": [
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"age is updated\", function () {\r",
+							"    let res = pm.response.json();\r",
+							"    pm.expect(res.age).to.eql(30);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"age\": 30\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{mockBurl}}res1/{{userId}}",
+					"host": [
+						"{{mockBurl}}res1"
+					],
+					"path": [
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delet user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Note: Sometimes the status code may be 204 (No Content) instead of 200\r",
+							"// Check status code 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Check if user was deleted\r",
+							"pm.test(\"User deleted successfully\", function () {\r",
+							"    let res = pm.response.json();\r",
+							"    pm.expect(res).to.have.property(\"id\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{mockBurl}}res1/{{userId}}",
+					"host": [
+						"{{mockBurl}}res1"
+					],
+					"path": [
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
